@@ -36,24 +36,24 @@ generate the output
 """
 
 
-#def run_etl_pipeline():
-source_folder = '/Users/wenda/airflow/dags/etl_pipeline/datasets/'
-
-asset_file = os.path.join(source_folder, 'gz_recipe.csv')
-asset_records = load_csv(asset_file)
-processed_df = processs_menu_data(asset_records)
-df=create_text_column(processed_df)
-df=transform_dataframe(df,MENU_PROMPT)
-#print_tabulated_data(df)
-translated_df=translate_text_column_to_english(df)
-save_df_to_csv(translated_df)
-
-## dataset to be stored in the Mongo Database
-dataframe_dict = {'MenuDataset': translated_df}
-delete_collection_data(database, collection, cluster_uri)
-insert_dataframe_to_collection(database, collection, cluster_uri,dataframe_dict)
-df=query_collection_to_dataframe(database, collection, cluster_uri)
-print_tabulated_data(df)
+def run_etl_pipeline():
+    source_folder = 'datasets/'
+    
+    asset_file = os.path.join(source_folder, 'gz_recipe.csv')
+    asset_records = load_csv(asset_file)
+    processed_df = processs_menu_data(asset_records)
+    df=create_text_column(processed_df)
+    df=transform_dataframe(df,MENU_PROMPT)
+    #print_tabulated_data(df)
+    translated_df=translate_text_column_to_english(df)
+    save_df_to_csv(translated_df)
+    
+    ## dataset to be stored in the Mongo Database
+    dataframe_dict = {'MenuDataset': translated_df}
+    delete_collection_data(database, collection, cluster_uri)
+    insert_dataframe_to_collection(database, collection, cluster_uri,dataframe_dict)
+    df=query_collection_to_dataframe(database, collection, cluster_uri)
+    print_tabulated_data(df)
 
 
 
